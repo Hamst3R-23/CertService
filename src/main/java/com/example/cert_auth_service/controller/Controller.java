@@ -39,7 +39,7 @@ public class Controller {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/user/deletion")
+    @DeleteMapping("/user/deletion")
     public ResponseEntity<?> deleteUser(
             @RequestBody UserModelController userModelController
     ) {
@@ -60,7 +60,7 @@ public class Controller {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/user/role/deletion")
+    @DeleteMapping("/user/role/deletion")
     public ResponseEntity<?> deleteRoleFromUser(
             @RequestBody ChangeRoleRequest changeRoleRequest
     ) {
@@ -76,7 +76,7 @@ public class Controller {
         return new ResponseEntity<>(roleService.findAll(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/role/deletion")
+    @DeleteMapping("/role/deletion")
     public ResponseEntity<?> deleteRole(
             @RequestBody RoleModelController roleModelController
     ) {
@@ -97,7 +97,7 @@ public class Controller {
         return new ResponseEntity<>(certificateService.findAll(), HttpStatus.CREATED);
     }
 
-    @PostMapping("certificate/deletion")
+    @DeleteMapping("certificate/deletion")
     public ResponseEntity<?> deleteCertificate(
             @RequestBody CertificateModelController certificateModelController
     ) {
@@ -113,7 +113,7 @@ public class Controller {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/user/certificate/deletion")
+    @DeleteMapping("/user/certificate/deletion")
     public ResponseEntity<?> deleteCertificateFromUser(
             @RequestBody ChangeCertificateRequest changeCertificateRequest
     ) {
