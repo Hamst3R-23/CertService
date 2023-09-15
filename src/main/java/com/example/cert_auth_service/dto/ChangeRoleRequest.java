@@ -3,7 +3,6 @@ package com.example.cert_auth_service.dto;
 public class ChangeRoleRequest {
 
     long userId;
-
     long roleId;
 
     public long getUserId() {
