@@ -1,6 +1,6 @@
 package com.example.cert_auth_service.model.controller;
 
-public class CertificateModelController {
+public class CertificateControllerModel {
 
     private long id;
 
@@ -41,4 +41,5 @@ public class CertificateModelController {
     public void setFingerprintAlgorithm(String fingerprintAlgorithm) {
         this.fingerprintAlgorithm = fingerprintAlgorithm;
     }
+
 }

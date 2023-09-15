@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-
 @Table(name = "users")
 
 public class User {
@@ -18,11 +17,11 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinColumn(name = "role_id")
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private Set<Certificate> certificate;
 
 
@@ -42,6 +41,12 @@ public class User {
         this.name = name;
         this.roles = new HashSet<>();
         this.certificate = new HashSet<>();
+    }
+
+    public User(User user) {
+        this.name = user.name;
+        this.roles = user.roles;
+        this.certificate = user.certificate;
     }
 
     public Set<Role> getRoles() {

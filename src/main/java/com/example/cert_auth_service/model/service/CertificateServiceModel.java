@@ -1,6 +1,6 @@
 package com.example.cert_auth_service.model.service;
 
-public class CertificateModelService {
+public class CertificateServiceModel {
 
     private String fingerprint;
 
@@ -9,7 +9,7 @@ public class CertificateModelService {
     private String subject;
 
 
-    public CertificateModelService(String fingerprint, String fingerprintAlgorithm, String subject) {
+    public CertificateServiceModel(String fingerprint, String fingerprintAlgorithm, String subject) {
         this.fingerprint = fingerprint;
         this.fingerprintAlgorithm = fingerprintAlgorithm;
         this.subject = subject;

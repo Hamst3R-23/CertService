@@ -1,6 +1,6 @@
 package com.example.cert_auth_service.model.controller;
 
-public class UserModelController {
+public class UserControllerModel {
 
     private long id;
 

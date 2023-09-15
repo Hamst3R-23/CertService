@@ -1,6 +1,5 @@
 package com.example.cert_auth_service.model.repository;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -18,7 +17,7 @@ public class Role {
     private String name;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> user;
 
     public Role() {

@@ -1,13 +1,13 @@
 package com.example.cert_auth_service.model.service;
 
-public class UserModelService {
+public class RoleServiceModel {
 
     private String name;
 
-    public UserModelService() {
+    public RoleServiceModel() {
     }
 
-    public UserModelService(String name) {
+    public RoleServiceModel(String name) {
         this.name = name;
     }
 
