@@ -1,17 +1,16 @@
 package com.example.cert_auth_service.model.controller;
 
 public class CertificateControllerModel {
-
     private long id;
-
     private String fingerprint;
-
     private String fingerprintAlgorithm;
-
     private String subject;
 
+    public CertificateControllerModel() {
+    }
+
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {
@@ -19,7 +18,7 @@ public class CertificateControllerModel {
     }
 
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public void setSubject(String subject) {
@@ -27,7 +26,7 @@ public class CertificateControllerModel {
     }
 
     public String getFingerprint() {
-        return fingerprint;
+        return this.fingerprint;
     }
 
     public void setFingerprint(String fingerprint) {
@@ -35,11 +34,10 @@ public class CertificateControllerModel {
     }
 
     public String getFingerprintAlgorithm() {
-        return fingerprintAlgorithm;
+        return this.fingerprintAlgorithm;
     }
 
     public void setFingerprintAlgorithm(String fingerprintAlgorithm) {
         this.fingerprintAlgorithm = fingerprintAlgorithm;
     }
-
 }

@@ -1,7 +1,6 @@
 package com.example.cert_auth_service.model.service;
 
 public class RoleServiceModel {
-
     private String name;
 
     public RoleServiceModel() {
@@ -12,11 +11,10 @@ public class RoleServiceModel {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-
 }

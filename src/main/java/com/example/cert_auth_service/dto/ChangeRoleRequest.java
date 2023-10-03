@@ -1,12 +1,14 @@
 package com.example.cert_auth_service.dto;
 
 public class ChangeRoleRequest {
-
     long userId;
     long roleId;
 
+    public ChangeRoleRequest() {
+    }
+
     public long getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(long userId) {
@@ -14,7 +16,7 @@ public class ChangeRoleRequest {
     }
 
     public long getRoleId() {
-        return roleId;
+        return this.roleId;
     }
 
     public void setRoleId(long roleId) {

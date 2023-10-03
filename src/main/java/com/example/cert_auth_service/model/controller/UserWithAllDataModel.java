@@ -3,15 +3,11 @@ package com.example.cert_auth_service.model.controller;
 import com.example.cert_auth_service.model.repository.Certificate;
 import com.example.cert_auth_service.model.repository.Role;
 import com.example.cert_auth_service.model.repository.User;
-
 import java.util.Set;
 
 public class UserWithAllDataModel {
-
     private String name;
-
     private Set<Role> roles;
-
     private Set<Certificate> certificate;
 
     public UserWithAllDataModel(User user) {
@@ -21,7 +17,7 @@ public class UserWithAllDataModel {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -29,7 +25,7 @@ public class UserWithAllDataModel {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(Set<Role> roles) {
@@ -37,11 +33,10 @@ public class UserWithAllDataModel {
     }
 
     public Set<Certificate> getCertificate() {
-        return certificate;
+        return this.certificate;
     }
 
     public void setCertificate(Set<Certificate> certificate) {
         this.certificate = certificate;
     }
-
 }

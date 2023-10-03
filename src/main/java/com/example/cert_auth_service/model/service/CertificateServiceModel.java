@@ -1,13 +1,9 @@
 package com.example.cert_auth_service.model.service;
 
 public class CertificateServiceModel {
-
     private String fingerprint;
-
     private String fingerprintAlgorithm;
-
     private String subject;
-
 
     public CertificateServiceModel(String fingerprint, String fingerprintAlgorithm, String subject) {
         this.fingerprint = fingerprint;
@@ -16,7 +12,7 @@ public class CertificateServiceModel {
     }
 
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public void setSubject(String subject) {
@@ -24,7 +20,7 @@ public class CertificateServiceModel {
     }
 
     public String getFingerprint() {
-        return fingerprint;
+        return this.fingerprint;
     }
 
     public void setFingerprint(String fingerprint) {
@@ -32,11 +28,10 @@ public class CertificateServiceModel {
     }
 
     public String getFingerprintAlgorithm() {
-        return fingerprintAlgorithm;
+        return this.fingerprintAlgorithm;
     }
 
     public void setFingerprintAlgorithm(String fingerprintAlgorithm) {
         this.fingerprintAlgorithm = fingerprintAlgorithm;
     }
-
 }

@@ -1,7 +1,6 @@
 package com.example.cert_auth_service.model.controller;
 
 public class JsonResponseToCreateDeleteOperationsModel {
-
     private String response;
 
     public JsonResponseToCreateDeleteOperationsModel(String response) {
@@ -9,11 +8,10 @@ public class JsonResponseToCreateDeleteOperationsModel {
     }
 
     public String getResponse() {
-        return response;
+        return this.response;
     }
 
     public void setResponse(String response) {
         this.response = response;
     }
-
 }

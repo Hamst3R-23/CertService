@@ -7,14 +7,12 @@ import com.example.cert_auth_service.model.controller.RoleControllerModel;
 import com.example.cert_auth_service.model.repository.Role;
 import com.example.cert_auth_service.model.service.RoleServiceModel;
 import com.example.cert_auth_service.repository.RoleRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class RoleService {
-
     private final RoleRepository roleRepository;
 
     public RoleService(RoleRepository roleRepository) {
@@ -23,32 +21,33 @@ public class RoleService {
 
     @Transactional
     public void addRole(RoleControllerModel roleControllerModel) {
-        if (roleRepository.findByName(roleControllerModel.getName()).isPresent()) {
+        if (this.roleRepository.findByName(roleControllerModel.getName()).isPresent()) {
             throw new AlreadyAddedException("This role is already added!");
+        } else {
+            RoleServiceModel roleServiceModel = new RoleServiceModel(roleControllerModel.getName());
+            Role role = new Role(roleServiceModel.getName());
+            this.roleRepository.save(role);
         }
-
-        RoleServiceModel roleServiceModel = new RoleServiceModel(roleControllerModel.getName());
-
-        Role role = new Role(roleServiceModel.getName());
-        roleRepository.save(role);
     }
 
     @Transactional
     public void deleteRoleByName(RoleControllerModel roleControllerModel) {
-        roleRepository.findById(roleControllerModel.getId()).orElseThrow(() -> new NoSuchException("No such role in database"));
-
+        this.roleRepository.findById(roleControllerModel.getId()).orElseThrow(() -> {
+            return new NoSuchException("No such role in database");
+        });
         RoleServiceModel roleServiceModel = new RoleServiceModel(roleControllerModel.getName());
-        roleRepository.deleteByName(roleServiceModel.getName());
+        this.roleRepository.deleteByName(roleServiceModel.getName());
     }
 
     @Transactional
     public void deleteRoleById(RoleControllerModel roleControllerModel) {
-        roleRepository.findById(roleControllerModel.getId()).orElseThrow(() -> new NoSuchException("No such role in database"));
-        roleRepository.deleteById(roleControllerModel.getId());
+        this.roleRepository.findById(roleControllerModel.getId()).orElseThrow(() -> {
+            return new NoSuchException("No such role in database");
+        });
+        this.roleRepository.deleteById(roleControllerModel.getId());
     }
 
     public List<Role> findAll() {
-        return new DataResponseModel<>(roleRepository.findAll()).getList();
+        return (new DataResponseModel(this.roleRepository.findAll())).getList();
     }
-
 }

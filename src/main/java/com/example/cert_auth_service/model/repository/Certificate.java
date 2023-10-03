@@ -1,30 +1,48 @@
 package com.example.cert_auth_service.model.repository;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "certificates")
+@Table(
+        name = "certificates"
+)
 public class Certificate {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private long id;
-
-    @Column(nullable = false)
+    @Column(
+            nullable = false
+    )
     private String fingerprint;
-
-    @Column(name = "fingerprintalgorithm", nullable = false)
+    @Column(
+            name = "fingerprintalgorithm",
+            nullable = false
+    )
     private String fingerprintAlgorithm;
-
-    @Column(name = "subject", nullable = false)
+    @Column(
+            name = "subject",
+            nullable = false
+    )
     private String subject;
-
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "user_id"
+    )
     private User user;
-
 
     public Certificate() {
     }
@@ -36,7 +54,7 @@ public class Certificate {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {
@@ -44,7 +62,7 @@ public class Certificate {
     }
 
     public String getFingerprint() {
-        return fingerprint;
+        return this.fingerprint;
     }
 
     public void setFingerprint(String fingerprint) {
@@ -52,11 +70,11 @@ public class Certificate {
     }
 
     public String getFingerprintAlgorithm() {
-        return fingerprintAlgorithm;
+        return this.fingerprintAlgorithm;
     }
 
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public void setSubject(String subject) {
@@ -68,11 +86,10 @@ public class Certificate {
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
-
 }

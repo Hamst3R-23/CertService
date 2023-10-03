@@ -13,20 +13,15 @@ import com.example.cert_auth_service.model.service.UserServiceModel;
 import com.example.cert_auth_service.repository.CertificateRepository;
 import com.example.cert_auth_service.repository.RoleRepository;
 import com.example.cert_auth_service.repository.UserRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
     private final CertificateRepository certificateRepository;
-
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, CertificateRepository certificateRepository) {
         this.userRepository = userRepository;
@@ -35,55 +30,74 @@ public class UserService {
     }
 
     public void addUser(UserControllerModel userControllerModel) {
-        if (userRepository.findByName(userControllerModel.getName()).isPresent()) {
+        if (this.userRepository.findByName(userControllerModel.getName()).isPresent()) {
             throw new AlreadyAddedException("This user is already added!");
+        } else {
+            UserServiceModel userServiceModel = new UserServiceModel(userControllerModel.getName());
+            User user = new User(userServiceModel.getName());
+            this.userRepository.save(user);
         }
-
-        UserServiceModel userServiceModel = new UserServiceModel(userControllerModel.getName());
-        User user = new User(userServiceModel.getName());
-        userRepository.save(user);
     }
 
     @Transactional
     public void deleteUserByName(UserControllerModel userControllerModel) {
-        userRepository.deleteByName(userRepository.findByName(userControllerModel.getName()).orElseThrow(() -> new NoSuchException("No such user in database")).getName());
+        this.userRepository.deleteByName(((User)this.userRepository.findByName(userControllerModel.getName()).orElseThrow(() -> {
+            return new NoSuchException("No such user in database");
+        })).getName());
     }
 
     @Transactional
     public void deleteUserById(UserControllerModel userControllerModel) {
-        userRepository.deleteById(userRepository.findById(userControllerModel.getId()).orElseThrow(() -> new NoSuchException("No such user in database")).getId());
+        this.userRepository.deleteById(((User)this.userRepository.findById(userControllerModel.getId()).orElseThrow(() -> {
+            return new NoSuchException("No such user in database");
+        })).getId());
     }
 
     public void setRoleToUser(ChangeRoleRequest changeRoleRequest) {
-        User user = userRepository.findById(changeRoleRequest.getUserId()).orElseThrow(() -> new NoSuchException("No such user in database"));
-        Role role = roleRepository.findById(changeRoleRequest.getRoleId()).orElseThrow(() -> new NoSuchException("No such role in database"));
+        User user = (User)this.userRepository.findById(changeRoleRequest.getUserId()).orElseThrow(() -> {
+            return new NoSuchException("No such user in database");
+        });
+        Role role = (Role)this.roleRepository.findById(changeRoleRequest.getRoleId()).orElseThrow(() -> {
+            return new NoSuchException("No such role in database");
+        });
         user.setRoles(role);
-        userRepository.save(user);
+        this.userRepository.save(user);
     }
 
     public void deleteRoleFromUser(ChangeRoleRequest changeRoleRequest) {
-        User user = userRepository.findById(changeRoleRequest.getUserId()).orElseThrow(() -> new NoSuchException("No such user in database"));
-        Role role = roleRepository.findById(changeRoleRequest.getRoleId()).orElseThrow(() -> new NoSuchException("No such role in database"));
+        User user = (User)this.userRepository.findById(changeRoleRequest.getUserId()).orElseThrow(() -> {
+            return new NoSuchException("No such user in database");
+        });
+        Role role = (Role)this.roleRepository.findById(changeRoleRequest.getRoleId()).orElseThrow(() -> {
+            return new NoSuchException("No such role in database");
+        });
         user.getRoles().remove(role);
-        userRepository.save(user);
+        this.userRepository.save(user);
     }
 
     public void setCertificateToUser(ChangeCertificateRequest changeCertificateRequest) {
-        User user = userRepository.findById(changeCertificateRequest.getUserId()).orElseThrow(() -> new NoSuchException("No such user in database"));
-        Certificate certificate = certificateRepository.findById(changeCertificateRequest.getCertificateId()).orElseThrow(() -> new NoSuchException("No such certificate in database"));
+        User user = (User)this.userRepository.findById(changeCertificateRequest.getUserId()).orElseThrow(() -> {
+            return new NoSuchException("No such user in database");
+        });
+        Certificate certificate = (Certificate)this.certificateRepository.findById(changeCertificateRequest.getCertificateId()).orElseThrow(() -> {
+            return new NoSuchException("No such certificate in database");
+        });
         user.setCertificate(certificate);
-        userRepository.save(user);
+        this.userRepository.save(user);
     }
 
     public void deleteCertificateFromUser(ChangeCertificateRequest changeCertificateRequest) {
-        User user = userRepository.findById(changeCertificateRequest.getUserId()).orElseThrow(() -> new NoSuchException("No such user in database"));
-        Certificate certificate = certificateRepository.findById(changeCertificateRequest.getCertificateId()).orElseThrow(() -> new NoSuchException("No such certificate in database"));
+        User user = (User)this.userRepository.findById(changeCertificateRequest.getUserId()).orElseThrow(() -> {
+            return new NoSuchException("No such user in database");
+        });
+        Certificate certificate = (Certificate)this.certificateRepository.findById(changeCertificateRequest.getCertificateId()).orElseThrow(() -> {
+            return new NoSuchException("No such certificate in database");
+        });
         user.getCertificate().remove(certificate);
-        userRepository.save(user);
+        this.userRepository.save(user);
     }
 
     public List<User> findAll() {
-        return new DataResponseModel<>(userRepository.findAll()).getList();
+        return (new DataResponseModel(this.userRepository.findAll())).getList();
     }
-
 }
