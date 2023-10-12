@@ -1,25 +1,26 @@
 package com.example.cert_auth_service.services;
 
-import com.example.cert_auth_service.exception.NoSuchCertificateException;
-import com.example.cert_auth_service.model.controller.CertificateModelController;
+import com.example.cert_auth_service.dto.AuthModel;
+import com.example.cert_auth_service.dto.JsonToCertificateRequest;
+import com.example.cert_auth_service.exception.AlreadyAddedException;
+import com.example.cert_auth_service.exception.NoSuchException;
+import com.example.cert_auth_service.model.controller.CertificateControllerModel;
+import com.example.cert_auth_service.model.controller.DataResponseModel;
+import com.example.cert_auth_service.model.controller.UserWithAllDataModel;
 import com.example.cert_auth_service.model.repository.Certificate;
 import com.example.cert_auth_service.model.repository.User;
-import com.example.cert_auth_service.model.service.CertificateModelService;
+import com.example.cert_auth_service.model.service.CertificateServiceModel;
 import com.example.cert_auth_service.parser.CertificateParser;
 import com.example.cert_auth_service.repository.CertificateRepository;
 import com.example.cert_auth_service.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.security.cert.CertificateException;
+import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CertificateService {
-
     private final CertificateRepository certificateRepository;
-
     private final UserRepository userRepository;
 
     public CertificateService(CertificateRepository certificateRepository, UserRepository userRepository) {
@@ -27,38 +28,45 @@ public class CertificateService {
         this.userRepository = userRepository;
     }
 
-    public void addCertificate(MultipartFile file) throws IOException, CertificateException {
-
-        String toParse = new String(file.getBytes(), Charset.defaultCharset());
-        CertificateModelService certificateModelService = CertificateParser.Parser(toParse);
-
-        Certificate certificate = new Certificate();
-        certificate.setFingerprint(certificateModelService.getFingerprint());
-        certificate.setFingerprintAlgorithm(certificateModelService.getFingerprintAlgorithm());
-        certificate.setSubject(certificateModelService.getSubject());
-
-        certificateRepository.save(certificate);
-    }
-
-    public void deleteCertificate(CertificateModelController certificateModelController) {
-        certificateRepository.deleteById(certificateModelController.getId());
-    }
-
-    public User checkCertificate(MultipartFile file) throws IOException, CertificateException {
-
-        String toParse = new String(file.getBytes(), Charset.defaultCharset());
-        CertificateModelService certificateModelService = CertificateParser.Parser(toParse);
-
-        if (certificateRepository.existsByFingerprint(certificateModelService.getFingerprint())) {
-            Certificate certificate = certificateRepository.findByFingerprint(certificateModelService.getFingerprint());
-            return userRepository.findUserByCertificate(certificate);
+    @Transactional
+    public void addCertificate(JsonToCertificateRequest certificateRequest) throws CertificateException {
+        String toParse = certificateRequest.getCertificate();
+        CertificateServiceModel certificateServiceModel = CertificateParser.parse(toParse);
+        if (this.certificateRepository.existsByFingerprint(certificateServiceModel.getFingerprint())) {
+            throw new AlreadyAddedException("This certificate is already added!");
         } else {
-            throw new NoSuchCertificateException("No such certificate in database");
+            Certificate certificate = new Certificate(certificateServiceModel.getFingerprint(), certificateServiceModel.getFingerprintAlgorithm(), certificateServiceModel.getSubject());
+            this.certificateRepository.save(certificate);
         }
     }
 
-    public Iterable<Certificate> findAll() {
-        return certificateRepository.findAll();
+    @Transactional
+    public void deleteCertificate(CertificateControllerModel certificateControllerModel) {
+        this.certificateRepository.findById(certificateControllerModel.getId()).orElseThrow(() -> {
+            return new NoSuchException("No such certificate in database");
+        });
+        this.certificateRepository.deleteById(certificateControllerModel.getId());
     }
 
+    public UserWithAllDataModel checkCertificate(JsonToCertificateRequest certificateRequest) throws CertificateException {
+        String toParse = certificateRequest.getCertificate();
+        CertificateServiceModel certificateServiceModel = CertificateParser.parse(toParse);
+        Certificate certificate = (Certificate)this.certificateRepository.findByFingerprint(certificateServiceModel.getFingerprint()).orElseThrow(() -> {
+            return new NoSuchException("No such certificate in database");
+        });
+        return new UserWithAllDataModel((User)this.userRepository.findUserByCertificate(certificate.getFingerprint()).get());
+    }
+
+    public UserWithAllDataModel checkCertificate(AuthModel certificateRequest) throws CertificateException {
+        String toParse = certificateRequest.getCertificate();
+        CertificateServiceModel certificateServiceModel = CertificateParser.parse(toParse);
+        Certificate certificate = (Certificate)this.certificateRepository.findByFingerprint(certificateServiceModel.getFingerprint()).orElseThrow(() -> {
+            return new NoSuchException("No such certificate in database");
+        });
+        return new UserWithAllDataModel((User)this.userRepository.findUserByCertificate(certificate.getFingerprint()).get());
+    }
+
+    public List<Certificate> findAll() {
+        return (new DataResponseModel(this.certificateRepository.findAll())).getList();
+    }
 }

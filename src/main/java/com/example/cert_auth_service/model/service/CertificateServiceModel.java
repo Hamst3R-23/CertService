@@ -1,25 +1,18 @@
-package com.example.cert_auth_service.model.controller;
+package com.example.cert_auth_service.model.service;
 
-public class CertificateModelController {
-
-    private long id;
-
+public class CertificateServiceModel {
     private String fingerprint;
-
     private String fingerprintAlgorithm;
-
     private String subject;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public CertificateServiceModel(String fingerprint, String fingerprintAlgorithm, String subject) {
+        this.fingerprint = fingerprint;
+        this.fingerprintAlgorithm = fingerprintAlgorithm;
+        this.subject = subject;
     }
 
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public void setSubject(String subject) {
@@ -27,7 +20,7 @@ public class CertificateModelController {
     }
 
     public String getFingerprint() {
-        return fingerprint;
+        return this.fingerprint;
     }
 
     public void setFingerprint(String fingerprint) {
@@ -35,7 +28,7 @@ public class CertificateModelController {
     }
 
     public String getFingerprintAlgorithm() {
-        return fingerprintAlgorithm;
+        return this.fingerprintAlgorithm;
     }
 
     public void setFingerprintAlgorithm(String fingerprintAlgorithm) {

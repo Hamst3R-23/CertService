@@ -1,13 +1,14 @@
 package com.example.cert_auth_service.model.controller;
 
-public class UserModelController {
-
+public class UserControllerModel {
     private long id;
-
     private String name;
 
+    public UserControllerModel() {
+    }
+
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {
@@ -15,11 +16,10 @@ public class UserModelController {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-
 }
